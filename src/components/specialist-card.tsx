@@ -20,10 +20,12 @@ export function SpecialistCard({ specialist }: { specialist: SpecialistSummary }
       <CardHeader>
         <div className="flex items-center gap-4">
           <Avatar className="size-14">
-            {specialist.photoUrl ? (
-              <AvatarImage src={specialist.photoUrl} alt={specialist.name} />
+            {specialist.googlePicture ? (
+              <AvatarImage src={specialist.googlePicture} alt={specialist.name} />
             ) : null}
-            <AvatarFallback>{initials(specialist.name)}</AvatarFallback>
+            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+              {initials(specialist.name)}
+            </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
             <h3 className="truncate text-xl font-semibold">{specialist.name}</h3>
@@ -64,8 +66,12 @@ export function AnySpecialistCard({ specialists }: { specialists: SpecialistSumm
           <div className="flex -space-x-3">
             {first3.map((s) => (
               <Avatar key={s.id} className="size-12 border-background border-2">
-                {s.photoUrl ? <AvatarImage src={s.photoUrl} alt={s.name} /> : null}
-                <AvatarFallback>{initials(s.name)}</AvatarFallback>
+                {s.googlePicture ? (
+                  <AvatarImage src={s.googlePicture} alt={s.name} />
+                ) : null}
+                <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                  {initials(s.name)}
+                </AvatarFallback>
               </Avatar>
             ))}
           </div>
