@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Specialist {
+  id                 String    @id
+  name               String
+  title              String
+  bio                String?
+  photoUrl           String?
+  spriteFrames       Int?
+  spriteWidth        Int?
+  skills             String    @default("[]")
+  stats              String    @default("[]")
+  googleEmail        String?
+  googlePicture      String?
+  googleRefreshToken String?
+  rotationUrl        String?
+  rotationFrames     Int?
+  rotationWidth      Int?
+  isActive           Boolean   @default(true)
+  sortOrder          Int       @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  bookings           Booking[]
+}
+
+model Booking {
+  id            String     @id @default(cuid())
+  specialistId  String
+  specialist    Specialist @relation(fields: [specialistId], references: [id])
+  wasAnyRequest Boolean    @default(false)
+  clientName    String
+  clientEmail   String
+  clientPhone   String
+  subject       String
+  startsAt      DateTime
+  endsAt        DateTime
+  googleEventId String?
+  meetLink      String?
+  status        String     @default("CONFIRMED")
+  createdAt     DateTime   @default(now())
+
+  @@index([specialistId, startsAt])
+  @@index([wasAnyRequest, createdAt])
+}

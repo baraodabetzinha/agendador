@@ -1,0 +1,226 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-mid: var(--brand-mid);
+  --color-surface-alt: var(--surface-alt);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* Design system — light */
+  --background: #ffffff;
+  --foreground: #080510;
+  --card: #ffffff;
+  --card-foreground: #080510;
+  --popover: #ffffff;
+  --popover-foreground: #080510;
+  --primary: #2343b4;
+  --primary-foreground: #ffffff;
+  --secondary: #bdcaf5;
+  --secondary-foreground: #1e2c7c;
+  --muted: #f5f5f7;
+  --muted-foreground: #6b7280;
+  --accent: #bdcaf5;
+  --accent-foreground: #1e2c7c;
+  --destructive: #dc2626;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #2343b4;
+  --brand-dark: #080510;
+  --brand-mid: #1e2c7c;
+  --surface-alt: #f5f5f7;
+  --chart-1: #2343b4;
+  --chart-2: #1e2c7c;
+  --chart-3: #bdcaf5;
+  --chart-4: #6b7280;
+  --chart-5: #080510;
+  --radius: 0.75rem;
+  --sidebar: #f5f5f7;
+  --sidebar-foreground: #080510;
+  --sidebar-primary: #2343b4;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #bdcaf5;
+  --sidebar-accent-foreground: #1e2c7c;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #2343b4;
+}
+
+.dark {
+  /* Mood noturno — derivado da paleta */
+  --background: #080510;
+  --foreground: #f5f5f7;
+  --card: #11101c;
+  --card-foreground: #f5f5f7;
+  --popover: #11101c;
+  --popover-foreground: #f5f5f7;
+  --primary: #4c6ae0;
+  --primary-foreground: #ffffff;
+  --secondary: #1e2c7c;
+  --secondary-foreground: #bdcaf5;
+  --muted: #18172a;
+  --muted-foreground: #9ca3af;
+  --accent: #1e2c7c;
+  --accent-foreground: #bdcaf5;
+  --destructive: #f87171;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #4c6ae0;
+  --brand-dark: #080510;
+  --brand-mid: #1e2c7c;
+  --surface-alt: #11101c;
+  --chart-1: #4c6ae0;
+  --chart-2: #bdcaf5;
+  --chart-3: #1e2c7c;
+  --chart-4: #9ca3af;
+  --chart-5: #f5f5f7;
+  --sidebar: #11101c;
+  --sidebar-foreground: #f5f5f7;
+  --sidebar-primary: #4c6ae0;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e2c7c;
+  --sidebar-accent-foreground: #bdcaf5;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #4c6ae0;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+    letter-spacing: -0.01em;
+    line-height: 1.6;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  h1 {
+    font-weight: 800;
+  }
+}
+
+/* ---------- Fighter arcade mode ---------- */
+
+@keyframes fighter-breathe {
+  0%, 50% { transform: translate3d(0, 0, 0); }
+  50.001%, 100% { transform: translate3d(0, -2px, 0); }
+}
+.fighter-breathe {
+  animation: fighter-breathe 1.4s steps(1, end) infinite;
+  will-change: transform;
+}
+
+@keyframes fighter-float {
+  0%, 50% { transform: translate3d(-1px, 0, 0); }
+  50.001%, 100% { transform: translate3d(1px, -1px, 0); }
+}
+.fighter-float {
+  animation: fighter-float 2.2s steps(1, end) infinite;
+}
+
+@keyframes fighter-slide-in-right {
+  0% { transform: translateX(60px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.fighter-slide-right {
+  animation: fighter-slide-in-right 320ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+@keyframes fighter-slide-in-left {
+  0% { transform: translateX(-60px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.fighter-slide-left {
+  animation: fighter-slide-in-left 320ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+@keyframes fighter-spotlight {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.85; }
+}
+.fighter-spotlight {
+  animation: fighter-spotlight 2s ease-in-out infinite;
+}
+
+@keyframes fighter-particle {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  10% { opacity: 0.9; }
+  100% { transform: translate3d(var(--drift, 0), -180px, 0); opacity: 0; }
+}
+.fighter-particle {
+  animation: fighter-particle var(--dur, 3.2s) linear infinite;
+}
+
+@keyframes fighter-flash {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.fighter-flash {
+  animation: fighter-flash 520ms ease-out forwards;
+}
+
+@keyframes fighter-title-glitch {
+  0%, 92% { transform: translate(0, 0); }
+  93% { transform: translate(1px, -1px); }
+  95% { transform: translate(-1px, 1px); }
+  97% { transform: translate(1px, 0); }
+  100% { transform: translate(0, 0); }
+}
+.fighter-title {
+  animation: fighter-title-glitch 6s steps(1, end) infinite;
+}
+
