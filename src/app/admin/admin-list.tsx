@@ -327,6 +327,7 @@ function EditSheet({ specialist }: { specialist: SpecialistSummary }) {
   const [name, setName] = useState(specialist.name)
   const [title, setTitle] = useState(specialist.title)
   const [bio, setBio] = useState(specialist.bio ?? "")
+  const [phone, setPhone] = useState(specialist.phone ?? "")
   const [skillsText, setSkillsText] = useState(specialist.skills.join(", "))
   const [stats, setStats] = useState<Array<{ label: string; value: number }>>(
     specialist.stats.length > 0
@@ -370,6 +371,7 @@ function EditSheet({ specialist }: { specialist: SpecialistSummary }) {
           name,
           title,
           bio: bio || null,
+          phone: phone.trim() || null,
           skills,
           stats: cleanStats,
         }),
@@ -415,6 +417,19 @@ function EditSheet({ specialist }: { specialist: SpecialistSummary }) {
               onChange={(e) => setBio(e.target.value)}
               rows={4}
             />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="phone">WhatsApp (recebe notificação de novo agendamento)</Label>
+            <Input
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="(11) 98765-4321"
+              inputMode="tel"
+            />
+            <p className="text-muted-foreground text-[11px]">
+              Deixe vazio pra não receber. O sistema normaliza pra E.164 (55 + DDD + número).
+            </p>
           </div>
           <div className="grid gap-2">
             <Label htmlFor="skills">Skills (separadas por vírgula)</Label>

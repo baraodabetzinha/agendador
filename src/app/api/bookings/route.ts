@@ -4,7 +4,7 @@ import { addMinutes, subDays } from "date-fns"
 import { prisma } from "@/lib/db"
 import { listSpecialists } from "@/lib/specialists"
 import { getBusyIntervals, createMeetingEvent } from "@/lib/google"
-import { sendWhatsApp } from "@/lib/evolution"
+import { enqueueWhatsApp } from "@/lib/wa-queue"
 import { MEETING_DURATION_MINUTES } from "@/lib/availability"
 import { formatDateTime } from "@/lib/time"
 
@@ -162,7 +162,7 @@ export async function POST(request: Request) {
     },
   })
 
-  const waMessage = [
+  const clientMessage = [
     `Oi, ${data.clientName.split(" ")[0]}! 👋`,
     ``,
     `Seu agendamento com *${chosen.name}* está confirmado:`,
@@ -172,9 +172,40 @@ export async function POST(request: Request) {
     `Até lá!`,
   ].join("\n")
 
-  sendWhatsApp(data.clientPhone, waMessage).catch((e) =>
-    console.error("[bookings] whatsapp failed", e)
+  await enqueueWhatsApp(data.clientPhone, clientMessage).catch((e) =>
+    console.error("[bookings] enqueue client whatsapp failed", e)
   )
+
+  // Specialist notification
+  const specialistRecord = await prisma.specialist.findUnique({
+    where: { id: chosenId },
+    select: { phone: true },
+  })
+  if (specialistRecord?.phone) {
+    const specialistMessage = [
+      `🆕 *Novo agendamento*`,
+      ``,
+      `Cliente: *${data.clientName}*`,
+      `📅 ${formatDateTime(start)}`,
+      meetLink ? `🎥 Meet: ${meetLink}` : null,
+      ``,
+      `📞 WhatsApp: ${data.clientPhone}`,
+      `✉️ E-mail: ${data.clientEmail}`,
+      ``,
+      `*Assunto:*`,
+      data.subject,
+    ]
+      .filter(Boolean)
+      .join("\n")
+
+    await enqueueWhatsApp(specialistRecord.phone, specialistMessage).catch(
+      (e) => console.error("[bookings] enqueue specialist whatsapp failed", e)
+    )
+  } else {
+    console.warn(
+      `[bookings] specialist ${chosenId} has no phone — skipping notification`
+    )
+  }
 
   return NextResponse.json({ ok: true, bookingId: booking.id })
 }

@@ -7,6 +7,7 @@ const schema = z.object({
   title: z.string().min(1).max(120).optional(),
   bio: z.string().max(500).nullable().optional(),
   photoUrl: z.string().url().nullable().optional(),
+  phone: z.string().max(30).nullable().optional(),
   skills: z.array(z.string().min(1).max(40)).max(12).optional(),
   stats: z
     .array(
@@ -37,6 +38,7 @@ export async function POST(
       ...(data.title !== undefined && { title: data.title }),
       ...(data.bio !== undefined && { bio: data.bio }),
       ...(data.photoUrl !== undefined && { photoUrl: data.photoUrl }),
+      ...(data.phone !== undefined && { phone: data.phone }),
       ...(data.skills !== undefined && { skills: JSON.stringify(data.skills) }),
       ...(data.stats !== undefined && { stats: JSON.stringify(data.stats) }),
     },

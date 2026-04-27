@@ -14,6 +14,7 @@ export type SpecialistSummary = {
   rotationFrames: number | null
   rotationWidth: number | null
   googlePicture: string | null
+  phone: string | null
   skills: string[]
   stats: SpecialistStat[]
   isConnected: boolean
@@ -64,6 +65,7 @@ export async function listSpecialists(): Promise<SpecialistSummary[]> {
     rotationFrames: s.rotationFrames,
     rotationWidth: s.rotationWidth,
     googlePicture: s.googlePicture,
+    phone: s.phone,
     skills: parseSkills(s.skills),
     stats: parseStats(s.stats),
     isConnected: Boolean(s.googleRefreshToken),
