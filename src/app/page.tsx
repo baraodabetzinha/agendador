@@ -1,11 +1,22 @@
 import Link from "next/link"
+import { redirect } from "next/navigation"
 import { Gamepad2 } from "lucide-react"
 import { listSpecialists } from "@/lib/specialists"
 import { SpecialistCard, AnySpecialistCard } from "@/components/specialist-card"
+import { getSettings, homepagePath } from "@/lib/settings"
 
 export const dynamic = "force-dynamic"
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ preview?: string }>
+}) {
+  const { preview } = await searchParams
+  const settings = await getSettings()
+  if (settings.homepage !== "default" && preview !== "1") {
+    redirect(homepagePath(settings.homepage))
+  }
   const specialists = await listSpecialists()
 
   return (

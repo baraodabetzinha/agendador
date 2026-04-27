@@ -3,7 +3,6 @@ import Link from "next/link"
 import { listSpecialists, type SpecialistSummary } from "@/lib/specialists"
 import { SlotPicker } from "@/components/slot-picker"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { buttonVariants } from "@/components/ui/button"
 import { ChevronLeft } from "lucide-react"
 
 export const dynamic = "force-dynamic"
@@ -22,9 +21,14 @@ function SpecialistAvatar({
   size = "lg",
 }: {
   specialist: SpecialistSummary
-  size?: "lg" | "md"
+  size?: "lg" | "md" | "sm"
 }) {
-  const classes = size === "lg" ? "size-16 md:size-20" : "size-12"
+  const classes =
+    size === "lg"
+      ? "size-12 md:size-16"
+      : size === "md"
+        ? "size-10"
+        : "size-9"
   return (
     <Avatar className={classes}>
       {specialist.googlePicture ? (
@@ -49,9 +53,11 @@ export default async function AgendarPage({
     const connected = all.filter((s) => s.isConnected)
     if (connected.length === 0) {
       return (
-        <main className="mx-auto max-w-3xl px-6 py-16">
+        <main className="mx-auto max-w-3xl px-5 py-10">
           <BackLink />
-          <h1 className="mt-4 text-3xl font-semibold">Nenhum especialista conectado ainda</h1>
+          <h1 className="mt-4 text-2xl font-semibold">
+            Nenhum especialista conectado ainda
+          </h1>
           <p className="text-muted-foreground mt-2">
             Peça para um admin conectar o Google Calendar em <code>/admin</code>.
           </p>
@@ -59,22 +65,22 @@ export default async function AgendarPage({
       )
     }
     return (
-      <main className="mx-auto w-full max-w-[1280px] px-6 py-10 md:py-16">
+      <main className="mx-auto w-full max-w-[1280px] px-5 pt-3 pb-8 sm:px-6 md:py-10">
         <BackLink />
-        <header className="mt-6 mb-10 flex items-center gap-5">
-          <div className="flex -space-x-3">
-            {connected.slice(0, 4).map((s) => (
+        <header className="mt-3 mb-5 flex items-center gap-3 md:mt-6 md:mb-8 md:gap-4">
+          <div className="flex -space-x-2">
+            {connected.slice(0, 3).map((s) => (
               <div key={s.id} className="ring-background ring-2 rounded-full">
-                <SpecialistAvatar specialist={s} size="md" />
+                <SpecialistAvatar specialist={s} size="sm" />
               </div>
             ))}
           </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Agendar com qualquer especialista
+          <div className="min-w-0">
+            <h1 className="text-lg font-bold tracking-tight sm:text-2xl md:text-3xl">
+              Escolha um horário
             </h1>
-            <p className="text-muted-foreground mt-2 text-base sm:text-lg">
-              Mostrando horários livres de {connected.map((s) => s.name).join(", ")}
+            <p className="text-muted-foreground text-xs sm:text-sm">
+              Mostrando horários de {connected.map((s) => s.name).join(", ")}
             </p>
           </div>
         </header>
@@ -87,9 +93,9 @@ export default async function AgendarPage({
   if (!target) notFound()
   if (!target.isConnected) {
     return (
-      <main className="mx-auto max-w-3xl px-6 py-16">
+      <main className="mx-auto max-w-3xl px-5 py-10">
         <BackLink />
-        <h1 className="mt-4 text-3xl font-semibold">
+        <h1 className="mt-4 text-2xl font-semibold">
           {target.name} ainda não conectou o Google
         </h1>
         <p className="text-muted-foreground mt-2">
@@ -100,15 +106,15 @@ export default async function AgendarPage({
   }
 
   return (
-    <main className="mx-auto w-full max-w-[1280px] px-6 py-10 md:py-16">
+    <main className="mx-auto w-full max-w-[1280px] px-5 pt-3 pb-8 sm:px-6 md:py-10">
       <BackLink />
-      <header className="mt-6 mb-10 flex items-center gap-5">
-        <SpecialistAvatar specialist={target} size="lg" />
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Agendar com {target.name}
+      <header className="mt-3 mb-5 flex items-center gap-3 md:mt-6 md:mb-8 md:gap-4">
+        <SpecialistAvatar specialist={target} size="md" />
+        <div className="min-w-0">
+          <h1 className="text-lg font-bold tracking-tight sm:text-2xl md:text-3xl">
+            Escolha um horário com {target.name}
           </h1>
-          <p className="text-muted-foreground mt-2 text-base sm:text-lg">
+          <p className="text-muted-foreground line-clamp-1 text-xs sm:text-sm">
             {target.title}
           </p>
         </div>
@@ -121,7 +127,10 @@ export default async function AgendarPage({
 
 function BackLink() {
   return (
-    <Link href="/" className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-1" })}>
+    <Link
+      href="/selecionar"
+      className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-sm font-medium transition-colors"
+    >
       <ChevronLeft className="size-4" /> Voltar
     </Link>
   )

@@ -7,7 +7,7 @@ export const metadata = {
   title: "Selecione seu especialista — Turbo Partners",
 }
 
-export default async function SelecionarPage() {
+export default async function SelecionarV4Page() {
   const specialists = await listSpecialists()
   return <FighterSelectV4 specialists={specialists} />
 }

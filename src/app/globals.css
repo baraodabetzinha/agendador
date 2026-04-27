@@ -224,3 +224,119 @@
   animation: fighter-title-glitch 6s steps(1, end) infinite;
 }
 
+/* ---------- Golden Ticket reveal ---------- */
+
+.golden-ticket-card {
+  container-type: inline-size;
+}
+
+@keyframes ticket-slam {
+  0% {
+    transform: translate3d(0, 60px, -2200px) rotateX(35deg) rotateY(-720deg) scale(0.05);
+    opacity: 0;
+    filter: blur(18px);
+  }
+  18% {
+    opacity: 1;
+    filter: blur(8px);
+  }
+  60% {
+    transform: translate3d(0, -10px, -200px) rotateX(8deg) rotateY(-90deg) scale(0.78);
+    filter: blur(2px);
+  }
+  82% {
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(1.07);
+    filter: blur(0);
+  }
+  90% {
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(0.96);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.ticket-slam {
+  transform-style: preserve-3d;
+  animation: ticket-slam 1500ms cubic-bezier(0.18, 0.7, 0.2, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+@keyframes ticket-shake {
+  0%, 76%, 100% { transform: translate3d(0, 0, 0); }
+  78% { transform: translate3d(-8px, 5px, 0); }
+  80% { transform: translate3d(7px, -4px, 0); }
+  82% { transform: translate3d(-5px, 3px, 0); }
+  84% { transform: translate3d(4px, -2px, 0); }
+  86% { transform: translate3d(-3px, 1px, 0); }
+  88% { transform: translate3d(2px, -1px, 0); }
+}
+.ticket-shake-host {
+  animation: ticket-shake 1500ms cubic-bezier(0.18, 0.7, 0.2, 1) forwards;
+}
+
+@keyframes ticket-flash {
+  0% { opacity: 0; }
+  72% { opacity: 0; }
+  82% { opacity: 0.85; }
+  100% { opacity: 0; pointer-events: none; }
+}
+.ticket-flash {
+  animation: ticket-flash 1700ms ease-out forwards;
+}
+
+@keyframes ticket-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateY(0deg); }
+  50% { transform: translate3d(0, -5px, 0) rotateY(1.5deg); }
+}
+.ticket-float {
+  animation: ticket-float 5s ease-in-out infinite 1.6s;
+  transform-style: preserve-3d;
+}
+
+@keyframes ticket-sheen {
+  0% { transform: translateX(0) skewX(-18deg); }
+  100% { transform: translateX(700%) skewX(-18deg); }
+}
+.ticket-sheen {
+  animation: ticket-sheen 3.6s ease-in-out infinite 2s;
+}
+
+@keyframes ticket-headline-in {
+  0% { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.ticket-headline {
+  animation: ticket-headline-in 600ms ease-out 1.2s both;
+}
+
+@keyframes consulting-orb-spin {
+  to { transform: rotate(360deg); }
+}
+.consulting-orb {
+  animation: consulting-orb-spin 1.4s linear infinite;
+}
+.consulting-orb-inner {
+  animation: consulting-orb-spin 3s linear infinite reverse;
+}
+
+@keyframes consulting-dots {
+  0%, 20% { content: ""; }
+  40% { content: "."; }
+  60% { content: ".."; }
+  80%, 100% { content: "..."; }
+}
+.dots::after {
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+  content: "";
+  animation: consulting-dots 1.2s steps(4, end) infinite;
+}
+.dots {
+  display: inline-block;
+  width: 0;
+  visibility: hidden;
+}
+

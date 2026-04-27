@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { addDays, startOfDay, endOfDay } from "date-fns"
+import { ptBR } from "date-fns/locale"
 import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -21,6 +22,8 @@ export function SlotPicker({ specialistId }: { specialistId: string }) {
   const [slots, setSlots] = useState<Slot[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [userPickedDay, setUserPickedDay] = useState(false)
+  const slotsRef = useRef<HTMLDivElement>(null)
 
   const { from, to } = useMemo(() => {
     if (!date) return { from: null, to: null }
@@ -59,6 +62,15 @@ export function SlotPicker({ specialistId }: { specialistId: string }) {
     }
   }, [from, to, specialistId])
 
+  // Auto-scroll to slot section after user picks a day
+  useEffect(() => {
+    if (!userPickedDay || !slotsRef.current) return
+    const t = window.setTimeout(() => {
+      slotsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }, 80)
+    return () => window.clearTimeout(t)
+  }, [date, userPickedDay])
+
   function pickSlot(slot: Slot) {
     const params = new URLSearchParams({ slot: slot.start })
     if (specialistId === "any" && slot.availableSpecialistIds.length > 0) {
@@ -68,13 +80,18 @@ export function SlotPicker({ specialistId }: { specialistId: string }) {
   }
 
   return (
-    <div className="grid gap-8 md:grid-cols-[auto_1fr]">
+    <div className="grid gap-6 md:grid-cols-[auto_1fr] md:gap-8">
       <Card className="h-fit">
-        <CardContent className="p-2 sm:p-4">
+        <CardContent className="flex justify-center p-2 sm:p-4">
           <Calendar
             mode="single"
+            locale={ptBR}
+            weekStartsOn={1}
             selected={date}
-            onSelect={setDate}
+            onSelect={(d) => {
+              setDate(d)
+              if (d) setUserPickedDay(true)
+            }}
             disabled={(d) => {
               const today = startOfDay(new Date())
               if (d < today) return true
@@ -87,14 +104,14 @@ export function SlotPicker({ specialistId }: { specialistId: string }) {
         </CardContent>
       </Card>
 
-      <div>
+      <div ref={slotsRef} className="scroll-mt-4">
         <h2 className="mb-4 text-lg font-medium">
           {date ? formatDate(date) : "Escolha uma data"}
         </h2>
         {loading && (
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-10 w-full" />
+              <Skeleton key={i} className="h-12 w-full sm:h-10" />
             ))}
           </div>
         )}
@@ -113,7 +130,7 @@ export function SlotPicker({ specialistId }: { specialistId: string }) {
                 key={s.start}
                 variant="outline"
                 onClick={() => pickSlot(s)}
-                className="h-10"
+                className="h-12 text-base font-medium sm:h-10 sm:text-sm"
               >
                 {formatTime(s.start)}
               </Button>

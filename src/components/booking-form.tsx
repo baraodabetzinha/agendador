@@ -50,13 +50,31 @@ export function BookingForm({
 }) {
   const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
+
+  const prefill = (() => {
+    if (typeof window === "undefined") return null
+    try {
+      const raw = window.sessionStorage.getItem("qualifier")
+      if (!raw) return null
+      const parsed = JSON.parse(raw) as {
+        name?: string
+        company?: string
+        email?: string
+        phone?: string
+      }
+      return parsed
+    } catch {
+      return null
+    }
+  })()
+
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      clientName: "",
-      clientEmail: "",
-      clientPhone: "",
-      subject: "",
+      clientName: prefill?.name ?? "",
+      clientEmail: prefill?.email ?? "",
+      clientPhone: prefill?.phone ?? "",
+      subject: prefill?.company ? `Empresa: ${prefill.company}\n\n` : "",
     },
   })
 
@@ -87,17 +105,17 @@ export function BookingForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 md:space-y-4">
         <FormField
           control={form.control}
           name="clientName"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nome</FormLabel>
+            <FormItem className="space-y-1">
+              <FormLabel className="text-xs sm:text-sm">Nome</FormLabel>
               <FormControl>
-                <Input placeholder="Como você se chama?" {...field} />
+                <Input placeholder="Como você se chama?" className="h-10" {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-[11px]" />
             </FormItem>
           )}
         />
@@ -105,12 +123,17 @@ export function BookingForm({
           control={form.control}
           name="clientEmail"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
+            <FormItem className="space-y-1">
+              <FormLabel className="text-xs sm:text-sm">Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="voce@empresa.com" {...field} />
+                <Input
+                  type="email"
+                  placeholder="voce@empresa.com"
+                  className="h-10"
+                  {...field}
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-[11px]" />
             </FormItem>
           )}
         />
@@ -118,16 +141,17 @@ export function BookingForm({
           control={form.control}
           name="clientPhone"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>WhatsApp</FormLabel>
+            <FormItem className="space-y-1">
+              <FormLabel className="text-xs sm:text-sm">WhatsApp</FormLabel>
               <FormControl>
                 <Input
                   placeholder="(11) 98765-4321"
+                  className="h-10"
                   value={field.value}
                   onChange={(e) => field.onChange(maskPhone(e.target.value))}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-[11px]" />
             </FormItem>
           )}
         />
@@ -135,17 +159,21 @@ export function BookingForm({
           control={form.control}
           name="subject"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Assunto da reunião</FormLabel>
+            <FormItem className="space-y-1">
+              <FormLabel className="text-xs sm:text-sm">Assunto da reunião</FormLabel>
               <FormControl>
-                <Textarea rows={3} placeholder="Sobre o que você quer conversar?" {...field} />
+                <Textarea
+                  rows={2}
+                  placeholder="Sobre o que você quer conversar?"
+                  {...field}
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-[11px]" />
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={submitting}>
+        <Button type="submit" className="h-11 w-full text-sm" disabled={submitting}>
           {submitting ? "Confirmando..." : "Confirmar agendamento"}
         </Button>
       </form>

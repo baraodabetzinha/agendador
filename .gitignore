@@ -52,3 +52,6 @@ next-env.d.ts
 
 # Agent workspace
 /.claude/
+
+# Runtime settings (homepage selector, etc) — per-environment
+/data/

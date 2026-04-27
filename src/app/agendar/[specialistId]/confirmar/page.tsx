@@ -37,14 +37,16 @@ export default async function ConfirmarPage({
     : target!.title
 
   return (
-    <main className="mx-auto w-full max-w-lg px-6 py-10 md:py-16">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Confirmar agendamento</h1>
-        <p className="text-muted-foreground mt-2">
+    <main className="mx-auto w-full max-w-lg px-5 pt-3 pb-8 sm:px-6 md:py-12">
+      <header className="mb-5 md:mb-8">
+        <h1 className="text-xl font-bold tracking-tight sm:text-2xl md:text-3xl">
+          Confirmar agendamento
+        </h1>
+        <p className="text-muted-foreground mt-1 line-clamp-1 text-xs sm:text-sm">
           {heading} · {subheading}
         </p>
-        <div className="border-primary/20 bg-primary/5 mt-5 rounded-xl border px-4 py-3 text-sm">
-          <span className="mr-1">📅</span>
+        <div className="border-primary/20 bg-primary/5 mt-3 inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs sm:text-sm md:mt-4">
+          <span>📅</span>
           {formatDateTime(slotDate)}
         </div>
       </header>

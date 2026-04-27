@@ -7,8 +7,9 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 export function SiteHeader() {
   const pathname = usePathname()
-  // Rota arcade é full-bleed, sem header
+  // Rotas full-bleed: arcade e qualificação têm o próprio header
   if (pathname?.startsWith("/selecionar")) return null
+  if (pathname?.startsWith("/qualificar")) return null
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-md">
