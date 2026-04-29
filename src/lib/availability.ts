@@ -1,5 +1,5 @@
 import { fromZonedTime, toZonedTime } from "date-fns-tz"
-import { addMinutes, isAfter, isBefore, isSameDay, startOfDay } from "date-fns"
+import { addHours, addMinutes, isAfter, isBefore, isSameDay, startOfDay } from "date-fns"
 import { APP_TIMEZONE } from "@/lib/time"
 import { getBusyIntervals, type BusyInterval } from "@/lib/google"
 
@@ -7,6 +7,7 @@ export const SLOT_MINUTES = 30
 export const WORK_START_HOUR = 9
 export const WORK_END_HOUR = 18
 const MEETING_DURATION_MINUTES = 30
+export const MIN_BOOKING_LEAD_HOURS = 12
 
 export type Slot = {
   start: string
@@ -22,7 +23,7 @@ function generateCandidateSlots(from: Date, to: Date): { start: Date; end: Date 
   const slots: { start: Date; end: Date }[] = []
   const fromZoned = toZonedTime(from, APP_TIMEZONE)
   const toZoned = toZonedTime(to, APP_TIMEZONE)
-  const now = new Date()
+  const earliest = addHours(new Date(), MIN_BOOKING_LEAD_HOURS)
 
   const cursor = new Date(fromZoned)
   cursor.setHours(0, 0, 0, 0)
@@ -47,7 +48,7 @@ function generateCandidateSlots(from: Date, to: Date): { start: Date; end: Date 
         const start = fromZonedTime(isoLike, APP_TIMEZONE)
         const end = addMinutes(start, MEETING_DURATION_MINUTES)
 
-        if (isBefore(start, now)) continue
+        if (isBefore(start, earliest)) continue
         if (isBefore(start, from) || isAfter(end, to)) continue
 
         slots.push({ start, end })

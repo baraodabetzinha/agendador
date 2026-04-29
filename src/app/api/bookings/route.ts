@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
-import { addMinutes, subDays } from "date-fns"
+import { addHours, addMinutes, subDays } from "date-fns"
 import { prisma } from "@/lib/db"
 import { listSpecialists } from "@/lib/specialists"
 import { getBusyIntervals, createMeetingEvent } from "@/lib/google"
 import { enqueueWhatsApp } from "@/lib/wa-queue"
-import { MEETING_DURATION_MINUTES } from "@/lib/availability"
+import { MEETING_DURATION_MINUTES, MIN_BOOKING_LEAD_HOURS } from "@/lib/availability"
 import { formatDateTime } from "@/lib/time"
 
 const schema = z.object({
@@ -55,9 +55,12 @@ export async function POST(request: Request) {
 
   const start = new Date(data.slot)
   const end = addMinutes(start, MEETING_DURATION_MINUTES)
-  if (start < new Date()) {
+  const earliest = addHours(new Date(), MIN_BOOKING_LEAD_HOURS)
+  if (start < earliest) {
     return NextResponse.json(
-      { error: "Este horário já passou" },
+      {
+        error: `Agendamentos precisam ser feitos com pelo menos ${MIN_BOOKING_LEAD_HOURS}h de antecedência. Escolha outro horário.`,
+      },
       { status: 400 }
     )
   }
