@@ -1,4 +1,7 @@
 import { prisma } from "@/lib/db"
+import { MAX_DIRECT_BOOKINGS } from "@/lib/limits"
+
+export { MAX_DIRECT_BOOKINGS } from "@/lib/limits"
 
 export type SpecialistStat = { label: string; value: number }
 
@@ -18,6 +21,8 @@ export type SpecialistSummary = {
   skills: string[]
   stats: SpecialistStat[]
   isConnected: boolean
+  directBookings: number
+  isFull: boolean
 }
 
 function parseSkills(raw: string): string[] {
@@ -48,11 +53,23 @@ function parseStats(raw: string): SpecialistStat[] {
   return []
 }
 
-export async function listSpecialists(): Promise<SpecialistSummary[]> {
-  const rows = await prisma.specialist.findMany({
-    where: { isActive: true },
-    orderBy: { sortOrder: "asc" },
+export async function countDirectBookings(): Promise<Map<string, number>> {
+  const grouped = await prisma.booking.groupBy({
+    by: ["specialistId"],
+    where: { wasAnyRequest: false, status: "CONFIRMED" },
+    _count: { _all: true },
   })
+  return new Map(grouped.map((g) => [g.specialistId, g._count._all]))
+}
+
+export async function listSpecialists(): Promise<SpecialistSummary[]> {
+  const [rows, directCounts] = await Promise.all([
+    prisma.specialist.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: "asc" },
+    }),
+    countDirectBookings(),
+  ])
   return rows.map((s) => ({
     id: s.id,
     name: s.name,
@@ -69,7 +86,15 @@ export async function listSpecialists(): Promise<SpecialistSummary[]> {
     skills: parseSkills(s.skills),
     stats: parseStats(s.stats),
     isConnected: Boolean(s.googleRefreshToken),
+    directBookings: directCounts.get(s.id) ?? 0,
+    isFull: (directCounts.get(s.id) ?? 0) >= MAX_DIRECT_BOOKINGS,
   }))
+}
+
+/** Especialistas que ainda podem receber agendamento direto — usado nas telas de seleção. */
+export async function listBookableSpecialists(): Promise<SpecialistSummary[]> {
+  const all = await listSpecialists()
+  return all.filter((s) => !s.isFull)
 }
 
 export async function getSpecialist(id: string) {

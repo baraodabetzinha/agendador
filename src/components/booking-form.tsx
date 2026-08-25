@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, type CSSProperties } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import {
   Form,
   FormControl,
@@ -173,7 +174,21 @@ export function BookingForm({
           )}
         />
 
-        <Button type="submit" className="h-11 w-full text-sm" disabled={submitting}>
+        <Button
+          type="submit"
+          size="lg"
+          className={cn(
+            "shadow-primary/40 h-14 w-full text-base font-bold tracking-wide shadow-lg transition-transform active:scale-[0.99]",
+            !submitting && "cta-pulse cta-sheen relative overflow-hidden"
+          )}
+          style={
+            {
+              "--cta-glow": "color-mix(in oklch, var(--primary) 55%, transparent)",
+              "--cta-glow-soft": "transparent",
+            } as CSSProperties
+          }
+          disabled={submitting}
+        >
           {submitting ? "Confirmando..." : "Confirmar agendamento"}
         </Button>
       </form>

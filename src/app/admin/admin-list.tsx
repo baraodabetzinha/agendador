@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Sparkles, Plus, Trash2 } from "lucide-react"
+import { MAX_DIRECT_BOOKINGS } from "@/lib/limits"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -84,6 +85,12 @@ function SpecialistRow({ specialist }: { specialist: SpecialistSummary }) {
                   Sprite IA
                 </Badge>
               )}
+              <Badge
+                variant={specialist.isFull ? "destructive" : "outline"}
+                title="Consultorias diretas (o sorteio ??? não conta)"
+              >
+                {specialist.directBookings}/{MAX_DIRECT_BOOKINGS} diretas
+              </Badge>
             </div>
             <p className="text-muted-foreground text-sm">{specialist.title}</p>
             <div className="mt-2 flex flex-wrap gap-1.5">

@@ -1,4 +1,4 @@
-import { listSpecialists } from "@/lib/specialists"
+import { listBookableSpecialists } from "@/lib/specialists"
 import { FighterSelectV4 } from "@/components/fighter-select-v4"
 
 export const dynamic = "force-dynamic"
@@ -8,6 +8,6 @@ export const metadata = {
 }
 
 export default async function SelecionarV4Page() {
-  const specialists = await listSpecialists()
+  const specialists = await listBookableSpecialists()
   return <FighterSelectV4 specialists={specialists} />
 }

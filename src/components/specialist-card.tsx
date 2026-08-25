@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
@@ -48,9 +49,14 @@ export function SpecialistCard({ specialist }: { specialist: SpecialistSummary }
       <CardFooter>
         <Link
           href={`/agendar/${specialist.id}`}
-          className={buttonVariants({ size: "lg", className: "w-full" })}
+          className={buttonVariants({
+            size: "lg",
+            className:
+              "group shadow-primary/30 h-12 w-full gap-2 text-base font-bold shadow-lg",
+          })}
         >
           Agendar com {specialist.name.split(" ")[0]}
+          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </CardFooter>
     </Card>
@@ -95,9 +101,14 @@ export function AnySpecialistCard({ specialists }: { specialists: SpecialistSumm
       <CardFooter>
         <Link
           href={`/agendar/any`}
-          className={buttonVariants({ size: "lg", className: "w-full" })}
+          className={buttonVariants({
+            size: "lg",
+            className:
+              "group shadow-primary/30 h-12 w-full gap-2 text-base font-bold shadow-lg",
+          })}
         >
           Agendar com qualquer especialista
+          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </CardFooter>
     </Card>

@@ -457,14 +457,17 @@ function FighterInfo({
         <button
           type="button"
           onClick={onConfirm}
-          className="group mt-5 flex w-full items-center justify-center gap-3 border-2 px-6 py-4 font-mono text-base font-bold tracking-[0.22em] uppercase transition-all hover:scale-[1.01]"
-          style={{
-            borderColor: slot.meta.glow,
-            background: `linear-gradient(135deg, ${slot.meta.glow}35, ${slot.meta.glow}15)`,
-            boxShadow: `0 0 28px ${slot.meta.glow}70`,
-            color: "white",
-            textShadow: `0 0 8px ${slot.meta.glow}`,
-          }}
+          className="cta-pulse cta-sheen group relative mt-5 flex w-full items-center justify-center gap-3 overflow-hidden border-2 px-6 py-5 font-mono text-lg font-extrabold tracking-[0.2em] uppercase transition-transform active:scale-[0.99]"
+          style={
+            {
+              borderColor: slot.meta.glow,
+              background: `linear-gradient(135deg, ${slot.meta.glow}60, ${slot.meta.glow}25)`,
+              color: "white",
+              textShadow: `0 0 10px ${slot.meta.glow}`,
+              "--cta-glow": `${slot.meta.glow}99`,
+              "--cta-glow-soft": `${slot.meta.glow}45`,
+            } as React.CSSProperties
+          }
         >
           <span>Agendar com especialista</span>
           <ChevronRight className="size-5" strokeWidth={3} />

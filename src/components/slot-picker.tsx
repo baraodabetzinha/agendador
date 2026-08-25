@@ -130,7 +130,7 @@ export function SlotPicker({ specialistId }: { specialistId: string }) {
                 key={s.start}
                 variant="outline"
                 onClick={() => pickSlot(s)}
-                className="h-12 text-base font-medium sm:h-10 sm:text-sm"
+                className="border-primary/50 text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary h-13 text-base font-bold transition-colors sm:h-12 sm:text-[15px]"
               >
                 {formatTime(s.start)}
               </Button>

@@ -16,9 +16,9 @@ const specialists = [
       "Analytics",
     ],
     stats: [
-      { label: "GROWTH", value: 95 },
+      { label: "GESTÃO", value: 95 },
       { label: "MIDIA", value: 92 },
-      { label: "SEO", value: 82 },
+      { label: "AQUISIÇÃO", value: 82 },
       { label: "ANALYTICS", value: 85 },
     ],
     sortOrder: 1,
@@ -50,7 +50,7 @@ const specialists = [
     bio: "Desenha produtos digitais orientados a dados, com foco em discovery e ativação.",
     skills: ["Product Discovery", "UX Research", "Design de produto", "Analytics de produto", "A/B testing"],
     stats: [
-      { label: "DISCOVERY", value: 92 },
+      { label: "CRO", value: 92 },
       { label: "UX", value: 95 },
       { label: "A/B TEST", value: 83 },
       { label: "DATA", value: 80 },

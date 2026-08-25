@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { Gamepad2 } from "lucide-react"
-import { listSpecialists } from "@/lib/specialists"
+import { listBookableSpecialists } from "@/lib/specialists"
 import { SpecialistCard, AnySpecialistCard } from "@/components/specialist-card"
 import { getSettings, homepagePath } from "@/lib/settings"
 
@@ -17,7 +17,7 @@ export default async function HomePage({
   if (settings.homepage !== "default" && preview !== "1") {
     redirect(homepagePath(settings.homepage))
   }
-  const specialists = await listSpecialists()
+  const specialists = await listBookableSpecialists()
 
   return (
     <main className="mx-auto w-full max-w-[1280px] px-6 py-10 md:py-16">

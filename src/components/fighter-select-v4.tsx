@@ -30,10 +30,10 @@ const MYSTERY_META: FighterMeta = {
 }
 
 const MYSTERY_STATS = [
-  { label: "ENCAIXE", value: 99 },
-  { label: "ROTAÇÃO", value: 99 },
-  { label: "MISTÉRIO", value: 99 },
-  { label: "CAOS", value: 99 },
+  { label: "PERFORMANCE", value: 99 },
+  { label: "UGC", value: 99 },
+  { label: "MARKETING", value: 99 },
+  { label: "VENDAS", value: 99 },
 ]
 
 const LABEL_PT: Record<string, string> = {
@@ -43,7 +43,6 @@ const LABEL_PT: Record<string, string> = {
   OUTBOUND: "PROSPECÇÃO",
   CLOSE: "FECHAMENTO",
   FORECAST: "PREVISÃO",
-  DISCOVERY: "DESCOBERTA",
   "A/B TEST": "TESTE A/B",
   DATA: "DADOS",
   ROTACAO: "ROTAÇÃO",
@@ -237,11 +236,14 @@ export function FighterSelectV4({ specialists }: { specialists: SpecialistSummar
         {/* Stage: arrows + sprite */}
         <div className="relative mt-1 flex flex-1 items-center justify-center min-h-0">
           <ArrowButton direction="left" onClick={() => go(-1)} color={current.meta.glow} />
-          <HeroStage
-            key={current.id}
-            slot={current}
-            slideClass={direction === "next" ? "fighter-slide-right" : "fighter-slide-left"}
-          />
+          {/* Wrapper só para escalar o palco em telas baixas (o HeroStage usa transform na animação de slide). */}
+          <div className="fighter-stage-scale">
+            <HeroStage
+              key={current.id}
+              slot={current}
+              slideClass={direction === "next" ? "fighter-slide-right" : "fighter-slide-left"}
+            />
+          </div>
           <ArrowButton direction="right" onClick={() => go(1)} color={current.meta.glow} />
         </div>
 
@@ -329,7 +331,7 @@ function HeroStage({ slot, slideClass }: { slot: Slot; slideClass: string }) {
   return (
     <div className={cn("relative flex flex-col items-center", slideClass)}>
       {/* Sprite + spotlight */}
-      <div className="relative flex h-44 w-44 items-end justify-center">
+      <div className="relative flex h-64 w-64 items-end justify-center">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[110%] fighter-spotlight"
@@ -376,11 +378,11 @@ function HeroStage({ slot, slideClass }: { slot: Slot; slideClass: string }) {
                     }
                   : null
               }
-              size={148}
+              size={224}
             />
           ) : (
             <div className="fighter-breathe">
-              <PixelSprite variant={slot.meta.variant} className="size-36" />
+              <PixelSprite variant={slot.meta.variant} className="size-52" />
             </div>
           )}
         </div>
@@ -388,7 +390,7 @@ function HeroStage({ slot, slideClass }: { slot: Slot; slideClass: string }) {
         {/* Pedestal */}
         <div
           aria-hidden
-          className="pointer-events-none absolute bottom-0 left-1/2 h-4 w-40 -translate-x-1/2"
+          className="pointer-events-none absolute bottom-0 left-1/2 h-4 w-60 -translate-x-1/2"
         >
           <div
             className="absolute inset-x-0 top-2 h-2 border-t-2 border-b-2"
@@ -460,17 +462,20 @@ function FighterInfo({
         <button
           type="button"
           onClick={onConfirm}
-          className="group mt-2.5 flex w-full items-center justify-center gap-2 border-2 px-4 py-2.5 font-mono text-[13px] font-bold tracking-[0.18em] uppercase transition-all active:scale-[0.99]"
-          style={{
-            borderColor: slot.meta.glow,
-            background: `linear-gradient(135deg, ${slot.meta.glow}35, ${slot.meta.glow}15)`,
-            boxShadow: `0 0 22px ${slot.meta.glow}70`,
-            color: "white",
-            textShadow: `0 0 8px ${slot.meta.glow}`,
-          }}
+          className="cta-pulse cta-sheen group relative mt-3 flex w-full items-center justify-center gap-2 overflow-hidden border-2 px-4 py-3.5 font-mono text-[15px] font-extrabold tracking-[0.16em] uppercase transition-transform active:scale-[0.98]"
+          style={
+            {
+              borderColor: slot.meta.glow,
+              background: `linear-gradient(135deg, ${slot.meta.glow}60, ${slot.meta.glow}25)`,
+              color: "white",
+              textShadow: `0 0 10px ${slot.meta.glow}`,
+              "--cta-glow": `${slot.meta.glow}99`,
+              "--cta-glow-soft": `${slot.meta.glow}45`,
+            } as React.CSSProperties
+          }
         >
           <span>{ctaLabel}</span>
-          <ChevronRight className="size-4" strokeWidth={3} />
+          <ChevronRight className="size-5 transition-transform group-hover:translate-x-1" strokeWidth={3} />
         </button>
       </div>
     </div>
@@ -490,7 +495,7 @@ function StatBar({
   const filled = Math.round((value / 100) * segments)
   return (
     <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-wider uppercase">
-      <span className="text-white/60 w-[68px] shrink-0 truncate">{label}</span>
+      <span className="text-white/60 w-[86px] shrink-0 truncate">{label}</span>
       <span className="flex flex-1 gap-0.5">
         {Array.from({ length: segments }).map((_, i) => (
           <span

@@ -401,8 +401,8 @@ function InfoPanel({
         type="button"
         onClick={onConfirm}
         className={cn(
-          buttonVariants({ size: "default" }),
-          "group mt-4 flex w-full items-center justify-center gap-2"
+          buttonVariants({ size: "lg" }),
+          "group shadow-primary/30 mt-4 flex h-12 w-full items-center justify-center gap-2 text-base font-bold shadow-lg"
         )}
       >
         <span>Agendar com {slot.isMystery ? "qualquer especialista" : slot.name.split(" ")[0]}</span>

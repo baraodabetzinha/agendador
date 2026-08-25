@@ -278,16 +278,18 @@ function FormView({
           <div className="mt-3">
             <button
               type="submit"
-              className="group relative flex w-full items-center justify-center gap-2 overflow-hidden border-2 border-amber-400 px-5 py-3 font-mono text-[13px] font-bold tracking-[0.18em] uppercase text-white transition-all active:scale-[0.99]"
+              className="cta-pulse cta-sheen group relative flex w-full items-center justify-center gap-2 overflow-hidden border-2 border-amber-400 px-5 py-4 font-mono text-[15px] font-extrabold tracking-[0.16em] uppercase text-white transition-transform active:scale-[0.98]"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(255,200,80,0.35), rgba(255,200,80,0.12))",
-                boxShadow: "0 0 24px rgba(255,200,80,0.55)",
-                textShadow: "0 0 8px rgba(255,200,80,0.8)",
+                  "linear-gradient(135deg, rgba(255,200,80,0.55), rgba(255,200,80,0.2))",
+                textShadow: "0 0 10px rgba(255,200,80,0.9)",
               }}
             >
               <span>Liberar minha sessão</span>
-              <ChevronRight className="size-4" strokeWidth={3} />
+              <ChevronRight
+                className="size-5 transition-transform group-hover:translate-x-1"
+                strokeWidth={3}
+              />
             </button>
             <p className="text-white/40 mt-1.5 flex items-center justify-center gap-1 text-[10px]">
               <ShieldCheck className="size-3" />
@@ -461,16 +463,18 @@ function RevealView({
         <button
           type="button"
           onClick={onResgatar}
-          className="group flex w-full items-center justify-center gap-2 border-2 border-amber-400 px-5 py-3.5 font-mono text-sm font-bold tracking-[0.18em] uppercase text-white transition-all active:scale-[0.99]"
+          className="cta-pulse cta-sheen group relative flex w-full items-center justify-center gap-2 overflow-hidden border-2 border-amber-400 px-5 py-4 font-mono text-base font-extrabold tracking-[0.16em] uppercase text-white transition-transform active:scale-[0.98]"
           style={{
             background:
-              "linear-gradient(135deg, rgba(255,200,80,0.4), rgba(255,200,80,0.15))",
-            boxShadow: "0 0 28px rgba(255,200,80,0.7)",
-            textShadow: "0 0 8px rgba(255,200,80,0.9)",
+              "linear-gradient(135deg, rgba(255,200,80,0.6), rgba(255,200,80,0.22))",
+            textShadow: "0 0 10px rgba(255,200,80,0.9)",
           }}
         >
           <span>Resgatar agora</span>
-          <ChevronRight className="size-4" strokeWidth={3} />
+          <ChevronRight
+            className="size-5 transition-transform group-hover:translate-x-1"
+            strokeWidth={3}
+          />
         </button>
       </div>
     </main>

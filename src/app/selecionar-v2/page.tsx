@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react"
-import { listSpecialists, type SpecialistSummary } from "@/lib/specialists"
+import { listBookableSpecialists, type SpecialistSummary } from "@/lib/specialists"
 import { AnimatedSprite } from "@/components/animated-sprite"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
@@ -15,7 +15,7 @@ export const metadata = {
 }
 
 export default async function SelecionarV2Page() {
-  const specialists = await listSpecialists()
+  const specialists = await listBookableSpecialists()
 
   return (
     <main className="bg-background min-h-[calc(100vh-4rem)]">
@@ -151,7 +151,7 @@ function SpecialistCardV2({ specialist }: { specialist: SpecialistSummary }) {
           href={`/agendar/${specialist.id}`}
           className={cn(
             buttonVariants({ size: "lg" }),
-            "group w-full justify-between"
+            "group shadow-primary/30 h-12 w-full justify-between text-base font-bold shadow-lg"
           )}
         >
           <span>Agendar com {specialist.name.split(" ")[0]}</span>

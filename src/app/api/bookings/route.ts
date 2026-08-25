@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { z } from "zod"
 import { addHours, addMinutes, subDays } from "date-fns"
 import { prisma } from "@/lib/db"
-import { listSpecialists } from "@/lib/specialists"
+import { listSpecialists, MAX_DIRECT_BOOKINGS } from "@/lib/specialists"
 import { getBusyIntervals, createMeetingEvent } from "@/lib/google"
 import { enqueueWhatsApp } from "@/lib/wa-queue"
 import { MEETING_DURATION_MINUTES, MIN_BOOKING_LEAD_HOURS } from "@/lib/availability"
@@ -80,6 +80,14 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "Especialista não conectado" },
         { status: 400 }
+      )
+    }
+    if (found.isFull) {
+      return NextResponse.json(
+        {
+          error: `${found.name} já preencheu as ${MAX_DIRECT_BOOKINGS} consultorias diretas. Escolha outro especialista.`,
+        },
+        { status: 409 }
       )
     }
     targetIds = [found.id]

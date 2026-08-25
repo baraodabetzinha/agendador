@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { listSpecialists, type SpecialistSummary } from "@/lib/specialists"
+import {
+  listSpecialists,
+  MAX_DIRECT_BOOKINGS,
+  type SpecialistSummary,
+} from "@/lib/specialists"
 import { SlotPicker } from "@/components/slot-picker"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ChevronLeft } from "lucide-react"
@@ -100,6 +104,21 @@ export default async function AgendarPage({
         </h1>
         <p className="text-muted-foreground mt-2">
           Peça para conectar em <code>/admin</code> e tente de novo.
+        </p>
+      </main>
+    )
+  }
+
+  if (target.isFull) {
+    return (
+      <main className="mx-auto max-w-3xl px-5 py-10">
+        <BackLink />
+        <h1 className="mt-4 text-2xl font-semibold">
+          {target.name} já preencheu as vagas
+        </h1>
+        <p className="text-muted-foreground mt-2">
+          São no máximo {MAX_DIRECT_BOOKINGS} consultorias diretas por
+          especialista. Volte para a seleção e escolha outro — ou use o sorteio.
         </p>
       </main>
     )
